@@ -1,6 +1,6 @@
 
-<center> <h2>Booter-Access-Monitoring in the Dutch NREN</h2> 
-</center><center> <h3>1 year of data to support the usage of Booter blacklist</h3> </center>
+<h2>Booter Blacklist - SURFnet's case (the Dutch NREN)</h2> 
+<h3>Data analysis to support the usage of Booter blacklist (booterblacklist.com)</h3> 
 
 
 - About: this ipython notebook (jupyter) describes all the analysis performed using one year of data provided by SURFnet.
