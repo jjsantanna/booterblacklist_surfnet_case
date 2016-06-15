@@ -2,11 +2,6 @@
 <h2>Booter Blacklist - SURFnet's case (the Dutch NREN)</h2> 
 <h3>Data analysis to support the usage of Booter blacklist (booterblacklist.com)</h3> 
 
-
-- About: this ipython notebook (jupyter) describes all the analysis performed using one year of data provided by SURFnet.
-
-- Data: each record is either a DNS request or part of the DNS response related to a Booter blacklist provided to SURFnet.
-
 <br>
 <div id="TOC">
 <ul>
