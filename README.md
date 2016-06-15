@@ -14,6 +14,8 @@
 <li><a href="#1.4">1.4. What are the outliers that should be *removed from the analysis?</a></li>
 <li><a href="#1.5">1.5. Defining the NEW data frame (excluding the outlier)</a></li>
 <li><a href="#1.6">1.6. How many different record types are there in the (remaining) data frame? and removing the outlier client?</a></li> 
+<li><a href="#1.7">1.7. What is the first, the last record, and the time window of the data?</a></li>
+
 </ul>
 
 <li><a href="#2">2. The analysis</a></li>
@@ -73,10 +75,10 @@ mycolors12 = list(islice(cycle(['#332288','#6699CC','#88CCEE','#44AA99','#117733
 # Loading the data
 # In pandas a dataset is loaded as "data frame" for this reason we use the acronym "df"
 # We also skipp the lines that have more columns than expected ( we just need this 6 columns)
-df0 = pd.read_csv('../data/20160530_surfnet_booters.txt', error_bad_lines=False, sep=',',\
+df0 = pd.read_csv('data/anon_booters.txt.gz', error_bad_lines=False, sep=',',\
                   names = ['timestamp', 'recordtype', 'client', 'in','querytype','value'])
 
-# Presenting the first 5 lines
+# Presenting the first 10 lines
 df0.head(10)
 ```
 
@@ -218,16 +220,16 @@ df0[df0['recordtype']==' Q(Q)']['client'].value_counts()[0:10]
 
 
 
-     b8f093c23ba0c6f5df242e935218578262309846e7f45ad6fc8dc4c69eb23ee1    4384
-     7b4f45b838b71c0b422ac872c22b31650d8a8765afcc003b8b3b6ca5b2cbed55     985
-     561e20341386f1b637011983cd6b800e4e77496fd22c14843bfe8521706e68ad     933
-     18f9eec93778aa08e31a56b1f416f0d8704db9a56d36f3eebefeac80c7cb2cc5     672
-     8acd6af477c9b86d6ef54ee4dbf9a4910396bc7c9ad64d4c22b89e77626bf72a     580
-     6936a119cf12e9551e0f08ba9e71750108f4807cc522fbb23de6b6240e07eb38     412
-     0f972ef7b4abd26a505e0d0aa8d997f01a9ac75a5a4b0f8ec31852fd8979e74e     380
+     b8f093c23ba0c6f5df242e935218578262309846e7f45ad6fc8dc4c69eb23ee1    4494
+     7b4f45b838b71c0b422ac872c22b31650d8a8765afcc003b8b3b6ca5b2cbed55     991
+     561e20341386f1b637011983cd6b800e4e77496fd22c14843bfe8521706e68ad     968
+     18f9eec93778aa08e31a56b1f416f0d8704db9a56d36f3eebefeac80c7cb2cc5     703
+     8acd6af477c9b86d6ef54ee4dbf9a4910396bc7c9ad64d4c22b89e77626bf72a     586
+     6936a119cf12e9551e0f08ba9e71750108f4807cc522fbb23de6b6240e07eb38     436
+     0f972ef7b4abd26a505e0d0aa8d997f01a9ac75a5a4b0f8ec31852fd8979e74e     384
      3d871e5389b8434ca72af572b8885e3c9104897cb7ce0f5d5623e4c6bdcac15f     371
      7f79658a9cc4e7e34f0c8ca40de8bfa2f76fa33f6653df351da3325c9e3c8781     370
-     6a08a0ed68df7495e74392068398313951d40c84b7f000d5aeedc01d86d0e1f3     340
+     6a08a0ed68df7495e74392068398313951d40c84b7f000d5aeedc01d86d0e1f3     346
     Name: client, dtype: int64
 
 
@@ -263,21 +265,42 @@ ax.legend(prop={'size':10})
 
 
 
-    <matplotlib.legend.Legend at 0x10b238e10>
+    <matplotlib.legend.Legend at 0x10c0f3a90>
 
 
 
 
-    <matplotlib.figure.Figure at 0x110651e90>
+    <matplotlib.figure.Figure at 0x1114d5990>
 
 
 
 ![png](output_14_2.png)
 
 
+<div id="1.7"><h2><a href="#TOC">1.7. What is the first, the last record and the time span of the data?</a></h2></div>
+
+
+```python
+first_record=df['timestamp'].head(1).values[0]
+last_record=df['timestamp'].tail(1).values[0]
+
+day_span=(last_record-first_record).astype('timedelta64[D]')
+
+first_record,last_record,day_span
+```
+
+
+
+
+    (numpy.datetime64('2015-06-19T19:38:01.000000000+0200'),
+     numpy.datetime64('2016-06-10T22:41:47.000000000+0200'),
+     numpy.timedelta64(357,'D'))
+
+
+
 <div id="2"><h1><a href="#TOC">2. The analysis</a></h1></div>
 
-<div id="2.0.1"><h2><a href="#TOC">2.0.1. Defining 4-months periods</a></h2></div>
+<div id="2.0.1"><h2><a href="#TOC">Defining 4-months periods</a></h2></div>
 
 
 ```python
@@ -309,7 +332,7 @@ total_booters_outliers,total_booters,booters_q1,booters_q2,booters_q3
 
 
 
-    (224, 190, 108, 120, 91)
+    (228, 194, 108, 120, 98)
 
 
 
@@ -370,7 +393,7 @@ fig.show()
 
 
 
-![png](output_24_1.png)
+![png](output_26_1.png)
 
 
 <div id="2.1.3"><h2><a href="#TOC">2.1.3. What are the most accessed Booters? and for each 4-months period?</a></h2></div>
@@ -444,12 +467,12 @@ ax6.legend(loc='center left',prop={'size':10},bbox_to_anchor=(1.01, 0.5),numpoin
 
 
 
-    <matplotlib.legend.Legend at 0x110651f10>
+    <matplotlib.legend.Legend at 0x10c0f33d0>
 
 
 
 
-![png](output_27_1.png)
+![png](output_29_1.png)
 
 
 <div id="2.1.4"><h2><a href="#TOC">2.1.4. What are the medians of access to the most accessed Booters?</a></h2></div>
@@ -481,83 +504,83 @@ medians.sort_values(['Monthly','Weekly'], ascending=[False,True])
   <tbody>
     <tr>
       <th>booter.xyz.</th>
-      <td>45.0</td>
-      <td>186.5</td>
+      <td>44.5</td>
+      <td>185.0</td>
     </tr>
     <tr>
       <th>mostwantedhf.info.</th>
-      <td>29.0</td>
-      <td>147.5</td>
+      <td>28.0</td>
+      <td>138.0</td>
     </tr>
     <tr>
       <th>inboot.me.</th>
-      <td>16.5</td>
-      <td>93.5</td>
+      <td>17.0</td>
+      <td>91.0</td>
     </tr>
     <tr>
       <th>ipstresser.com.</th>
-      <td>14.0</td>
-      <td>59.5</td>
+      <td>13.0</td>
+      <td>58.0</td>
     </tr>
     <tr>
       <th>vbooter.org.</th>
-      <td>11.0</td>
-      <td>57.5</td>
+      <td>11.5</td>
+      <td>49.0</td>
     </tr>
     <tr>
       <th>quezstresser.com.</th>
-      <td>6.5</td>
-      <td>35.5</td>
+      <td>7.0</td>
+      <td>38.0</td>
     </tr>
     <tr>
       <th>ragebooter.net.</th>
       <td>3.0</td>
-      <td>27.5</td>
-    </tr>
-    <tr>
-      <th>vdos-s.com.</th>
-      <td>2.5</td>
-      <td>18.0</td>
+      <td>26.0</td>
     </tr>
     <tr>
       <th>ddos.city.</th>
       <td>3.0</td>
-      <td>16.5</td>
-    </tr>
-    <tr>
-      <th>titaniumstresser.net.</th>
-      <td>2.0</td>
-      <td>15.0</td>
-    </tr>
-    <tr>
-      <th>boot4free.com.</th>
-      <td>1.0</td>
-      <td>14.5</td>
+      <td>16.0</td>
     </tr>
     <tr>
       <th>powerstresser.com.</th>
       <td>2.0</td>
-      <td>14.5</td>
+      <td>14.0</td>
     </tr>
     <tr>
-      <th>ragebooter.com.</th>
+      <th>titaniumstresser.net.</th>
       <td>2.0</td>
-      <td>12.5</td>
+      <td>14.0</td>
     </tr>
     <tr>
-      <th>ipstresstest.com.</th>
-      <td>0.0</td>
+      <th>boot4free.com.</th>
+      <td>1.0</td>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>vdos-s.com.</th>
+      <td>2.5</td>
       <td>12.0</td>
     </tr>
     <tr>
       <th>iddos.net.</th>
-      <td>0.5</td>
+      <td>0.0</td>
       <td>9.0</td>
+    </tr>
+    <tr>
+      <th>ragebooter.com.</th>
+      <td>1.5</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>ipstresstest.com.</th>
+      <td>0.0</td>
+      <td>6.0</td>
     </tr>
     <tr>
       <th>purestress.net.</th>
       <td>0.0</td>
-      <td>2.5</td>
+      <td>2.0</td>
     </tr>
     <tr>
       <th>xplodestresser.pw.</th>
@@ -565,9 +588,9 @@ medians.sort_values(['Monthly','Weekly'], ascending=[False,True])
       <td>1.0</td>
     </tr>
     <tr>
-      <th>expokent.com.</th>
+      <th>booter.eu.</th>
       <td>0.0</td>
-      <td>1.0</td>
+      <td>0.0</td>
     </tr>
   </tbody>
 </table>
@@ -595,7 +618,7 @@ total_users_outliers,total_users,users_q1,users_q2,users_q3
 
 
 
-    (441, 439, 180, 245, 197)
+    (450, 448, 180, 245, 207)
 
 
 
@@ -650,7 +673,7 @@ fig.show()
 ```
 
 
-![png](output_35_0.png)
+![png](output_37_0.png)
 
 
 <div id="2.2.3."><h2><a href="#TOC">2.2.3. Which are the top10 clients?and how many times each top10 client request for a Booter?</a></h2></div>
@@ -723,12 +746,12 @@ ax6.legend(prop={'size':10})
 
 
 
-    <matplotlib.legend.Legend at 0x113a5ffd0>
+    <matplotlib.legend.Legend at 0x114abcb50>
 
 
 
 
-![png](output_38_1.png)
+![png](output_40_1.png)
 
 
 <div id="2.2.4."><h2><a href="#TOC">2.2.4. How many accesses to Booters each top 10 client performed? How is the overall distribution of access to different Booters each client performed?</a></h2></div>
@@ -771,7 +794,7 @@ fig.show()
 ```
 
 
-![png](output_40_0.png)
+![png](output_42_0.png)
 
 
 <div id="2.2.5"><h2><a href="#TOC">2.2.5. What are the medians of access to the most accessed Booters?</a></h2></div>
@@ -803,83 +826,63 @@ medians.sort_values(['Monthly','Weekly'], ascending=[False,True])
   <tbody>
     <tr>
       <th>7b4f45b838b71c0b422ac872c22b31650d8a8765afcc003b8b3b6ca5b2cbed55</th>
-      <td>15.0</td>
+      <td>14.5</td>
       <td>80.0</td>
     </tr>
     <tr>
       <th>561e20341386f1b637011983cd6b800e4e77496fd22c14843bfe8521706e68ad</th>
-      <td>11.5</td>
-      <td>73.5</td>
+      <td>13.0</td>
+      <td>72.0</td>
     </tr>
     <tr>
       <th>18f9eec93778aa08e31a56b1f416f0d8704db9a56d36f3eebefeac80c7cb2cc5</th>
-      <td>10.0</td>
+      <td>10.5</td>
       <td>49.0</td>
     </tr>
     <tr>
       <th>8acd6af477c9b86d6ef54ee4dbf9a4910396bc7c9ad64d4c22b89e77626bf72a</th>
-      <td>4.0</td>
-      <td>29.0</td>
+      <td>3.5</td>
+      <td>27.0</td>
     </tr>
     <tr>
       <th>0f972ef7b4abd26a505e0d0aa8d997f01a9ac75a5a4b0f8ec31852fd8979e74e</th>
-      <td>3.0</td>
-      <td>24.5</td>
+      <td>2.5</td>
+      <td>23.0</td>
     </tr>
     <tr>
       <th>6936a119cf12e9551e0f08ba9e71750108f4807cc522fbb23de6b6240e07eb38</th>
       <td>4.0</td>
-      <td>22.0</td>
-    </tr>
-    <tr>
-      <th>3d871e5389b8434ca72af572b8885e3c9104897cb7ce0f5d5623e4c6bdcac15f</th>
-      <td>0.0</td>
-      <td>20.0</td>
+      <td>23.0</td>
     </tr>
     <tr>
       <th>4778e1a1a9a899ad68cbf91e7566860ac9c94cce707fc8127e6739841f03587e</th>
-      <td>1.5</td>
-      <td>19.0</td>
+      <td>0.5</td>
+      <td>18.0</td>
     </tr>
     <tr>
       <th>2fe0390dd55d56e6c2889f5ccd5361b233a78d7415ab4fd2a08a9fc0c0f42b80</th>
-      <td>2.0</td>
-      <td>18.5</td>
+      <td>2.5</td>
+      <td>17.0</td>
     </tr>
     <tr>
       <th>a13133036389ac9dd4762142ea36d3405bd78e12402f62df483d0f91fb427db6</th>
       <td>1.0</td>
-      <td>18.0</td>
+      <td>16.0</td>
     </tr>
     <tr>
       <th>6a08a0ed68df7495e74392068398313951d40c84b7f000d5aeedc01d86d0e1f3</th>
       <td>1.5</td>
-      <td>18.0</td>
-    </tr>
-    <tr>
-      <th>062488d499397807f5b1f30f0c97a6162bf8e8aaedf51b34f33b6960f5e6fcea</th>
-      <td>3.5</td>
-      <td>18.0</td>
+      <td>16.0</td>
     </tr>
     <tr>
       <th>0fcb07b661671c1dd54f2cab5aaa44340e0f07c8812dd9a75a7c2588dcd49b27</th>
       <td>2.0</td>
-      <td>17.0</td>
-    </tr>
-    <tr>
-      <th>3c9d0942f598b82de921f8461977a66434e2712c547de01f3622bf6dbf57575b</th>
-      <td>3.0</td>
-      <td>16.5</td>
+      <td>16.0</td>
     </tr>
     <tr>
       <th>666ccb31666bd54d14ab078ab73d96cf04a01ec113a12dcd02e5a759019400ba</th>
       <td>1.5</td>
-      <td>15.5</td>
-    </tr>
-    <tr>
-      <th>6efadc240e0549394684390a59ab01912441ec3319bf7015ed2819db66edac6a</th>
-      <td>3.0</td>
-      <td>14.5</td>
+      <td>15.0</td>
     </tr>
     <tr>
       <th>f9a6b7ec0ccef96a70e8548e081fb92a4f281193c4a2eedf8bd554921783cc50</th>
@@ -887,14 +890,19 @@ medians.sort_values(['Monthly','Weekly'], ascending=[False,True])
       <td>14.0</td>
     </tr>
     <tr>
-      <th>f6f7fe38d406f181d374f7e4475639e95a93e3f1559c5229b3d43431aae50b05</th>
-      <td>0.0</td>
-      <td>4.0</td>
+      <th>6efadc240e0549394684390a59ab01912441ec3319bf7015ed2819db66edac6a</th>
+      <td>2.5</td>
+      <td>10.0</td>
     </tr>
     <tr>
-      <th>6e23b99069b86c590dbff05d70859ca094f6bb0111f983958e2f84557e484dcb</th>
+      <th>3d871e5389b8434ca72af572b8885e3c9104897cb7ce0f5d5623e4c6bdcac15f</th>
       <td>0.0</td>
-      <td>1.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>f6f7fe38d406f181d374f7e4475639e95a93e3f1559c5229b3d43431aae50b05</th>
+      <td>0.0</td>
+      <td>5.0</td>
     </tr>
     <tr>
       <th>7f79658a9cc4e7e34f0c8ca40de8bfa2f76fa33f6653df351da3325c9e3c8781</th>
@@ -908,6 +916,11 @@ medians.sort_values(['Monthly','Weekly'], ascending=[False,True])
     </tr>
     <tr>
       <th>6f8914d9ef7e3200bbf91aeb493b3d458ecad654300068f6b5fece7a42ad6fec</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6e23b99069b86c590dbff05d70859ca094f6bb0111f983958e2f84557e484dcb</th>
       <td>0.0</td>
       <td>0.0</td>
     </tr>
