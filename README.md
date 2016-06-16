@@ -272,7 +272,7 @@ fig.show()
 
 
 
-    <matplotlib.figure.Figure at 0x7ffafa680810>
+    <matplotlib.figure.Figure at 0x7f7a2163ebd0>
 
 
 
@@ -468,7 +468,7 @@ ax6.legend(loc='center left',prop={'size':10},bbox_to_anchor=(1.01, 0.5),numpoin
 
 
 
-    <matplotlib.legend.Legend at 0x7ffafa680cd0>
+    <matplotlib.legend.Legend at 0x7f7a2163ec90>
 
 
 
@@ -656,12 +656,12 @@ ax1.set_xlabel("# access")
 ax1.set_ylabel("CDF of users")
 
 ax2 = plt.subplot2grid((2,3), (1,0))
-cdf_q1.plot(lw=2, drawstyle='steps',color='r', title="Q2")
+cdf_q1.plot(lw=2, drawstyle='steps',color='r', title="Q1")
 ax2.set_xlabel("# access")
 ax2.set_ylabel("CDF of users")
 
 ax3 = plt.subplot2grid((2,3), (1,1))
-cdf_q2.plot(lw=2, drawstyle='steps',color='g', title="Q1")
+cdf_q2.plot(lw=2, drawstyle='steps',color='g', title="Q2")
 ax3.set_xlabel("# access")
 ax3.set_ylabel("CDF of users")
 
@@ -748,7 +748,7 @@ ax6.legend(prop={'size':10})
 
 
 
-    <matplotlib.legend.Legend at 0x7ffacd211ad0>
+    <matplotlib.legend.Legend at 0x7f79ec1a3ad0>
 
 
 
