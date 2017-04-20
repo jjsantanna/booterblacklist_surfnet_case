@@ -10,4 +10,4 @@ In this scenario, an user of your network access a Booter and a couple of minute
 We **DO NOT** recomend the use the Booter blacklist to **BLOCK** users but inseady notify them that they are trying to access a service that can potentially harm other services in the Internet (and of course monitor them). 
 
 ## Use case: SURFnet's user monitoring
-![surfnet_use_case.ipynb](sufnetfigs/surfnet_case_analysis.ipynb)
+![surfnet_use_case.ipynb](sufnet/surfnet_case_analysis.ipynb)
